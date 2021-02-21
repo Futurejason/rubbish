@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/commont.css"/>
+		<link rel="stylesheet" type="text/css" href="css/searchs.css"/>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">垃圾分类</h1>
+		</header>
+		<section>
+			<h1>匹配结果</h1>
+			<div id="resultes">
+				<p>正在查阅，请稍后 ！</p>
+				<p>未知垃圾</p>
+			</div>
+			<div>
+				<h3>你可能要找的是</h2>
+				<ul class="mui-table-view" id="others">
+						<li class="mui-table-view-cell">
+							<a class="mui-navigate-right">
+								<div>
+									<span>奶粉勺子</span>
+									<span>干垃圾</span>
+								</div>
+							</a>
+						</li>
+						<li class="mui-table-view-cell">
+							<a class="mui-navigate-right">
+								<div>
+									<span>奶粉勺子</span>
+									<span>干垃圾</span>
+								</div>
+							</a>
+						</li>
+						<li class="mui-table-view-cell">
+							<a class="mui-navigate-right">
+								<div>
+									<span>奶粉勺子</span>
+									<span>干垃圾</span>
+								</div>
+							</a>
+						</li>
+					</ul>
+			</div>
+			
+			
+		</section>
+		
+		<script src="js/flexible.js"></script>
+		<script src="js/mui.js"></script>
+		<script type="text/javascript">
+			mui.init()
+			mui.plusReady(function(){
+				// 调整状态栏颜色
+				plus.navigator.setStatusBarBackground('#f3f3f1');
+				
+				mui('#others')[0].innerHTML='';
+				//接受语音数据
+				var self =plus.webview.currentWebview();
+				var title=decodeURI(self.title);
+				// console.log(title);
+				// 传递参数
+				mui.ajax('http://apis.juhe.cn/rubbish/search',{
+					// 请求的参数
+					data:{
+						key:'dfe7a5dc90a9be32d35d15d5a06eb619',
+						q  :title
+					},
+					// 请求成功后返回的参数
+					success:function(data){
+						//请求数据处理
+						var result=data.result;
+						// console.log();
+						//如果没有请求到数据
+						if(!result){
+							mui('#resultes')[0].innerHTML=`
+							<p>正在查阅，请稍后 ！</p>
+							<p>未知垃圾</p>
+							`;
+							//项目不执行
+							return false;
+						}
+						//如果有数据
+						
+						mui.each(result,function(index,item){
+							//如果数据完全相等
+							if(item.itemName==title){
+								mui('#resultes')[0].innerHTML=`
+								<p>${item.itemName}为</p>
+								<p>${item.itemCategory}</p>
+								`;
+							}else{
+								mui('#others')[0].innerHTML+=`
+								<li class="mui-table-view-cell">
+									<a class="mui-navigate-right">
+										<div>
+											<span>${item.itemName}</span>
+											<span>${item.itemCategory}</span>
+										</div>
+									</a>
+								</li>
+								`;
+							}
+						})
+					},
+				})
+			})
+		</script>
+	</body>
+
+</html>

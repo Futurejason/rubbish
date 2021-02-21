@@ -1,0 +1,162 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="font_2248007_1poadghf9jq/iconfont.css"/>
+		<link rel="stylesheet" type="text/css" href="css/commont.css"/>
+		<link rel="stylesheet" type="text/css" href="css/fontsearch.css"/>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">垃圾分类</h1>
+		</header>
+		<section>
+			<div id="shuru">
+				<h2>匹配结果</h2>
+				<p><input type="text" name="" class="ifonts" placeholder="请输入"/></p>
+			</div>
+			<div id="remen">
+				<h2>热门搜索</h2>
+				<ul id="hotsearch">
+				</ul>
+			</div>
+		</section>
+		<footer>
+			<div >
+				<h3>搜索历史</h3>
+				<div id="wrapper">
+					<ul class="mui-table-view" id="Lishi">
+							<li class="mui-table-view-cell" data-title="苹果">
+								<a class="mui-navigate-right">
+									<span class="iconfont icon-shijian"></span>勺子
+								</a>
+							</li>
+						</ul>
+				</div>
+			</div>
+		</footer>
+		
+		<script src="js/iscroll.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/flexible.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/mui.js"></script>
+		<script type="text/javascript">
+			mui.init()
+			mui.plusReady(function () {
+				// 历史记录
+				Fgetstorage();
+				//搜索数据
+				mui('#shuru').on('keypress','.ifonts',function(e){
+					var keycode=e.keyCode;
+					var inputval=document.querySelector('.ifonts').value;
+					if(keycode==13){
+						// 跳转页面
+						Fjump(inputval);
+						// 设置本地存储
+						Fsetstorage(inputval);
+						// 获取本地存储
+						Fgetstorage();
+						//收起键盘
+						document.activeElement.blur();
+					}
+				})
+				//点击空白处收起键盘
+				window.addEventListener('touchstart',function(){
+					document.activeElement.blur();
+				},false)
+				//请求热门搜索数据
+				mui.ajax('http://apis.juhe.cn/rubbish/hotSearch',{
+					data:{
+						key : 'dfe7a5dc90a9be32d35d15d5a06eb619'
+					},
+					success:function(data){
+						var results=data.result;
+						mui.each(results,function(index,item){
+							document.querySelector('#hotsearch').innerHTML+=`
+							    <li data-title='${item.itemName}'>${item.itemName}</li>
+							`
+						})
+					}
+				})
+				//热门搜索的点击事件
+				mui('#hotsearch').on('tap','li',function(){
+					var datatil=this.getAttribute('data-title');
+					Fjump(datatil);
+					// 设置本地存储
+					Fsetstorage(datatil);
+					// 获取本地存储
+					Fgetstorage();
+				})
+				//跳转页面函数
+				function Fjump(val){
+					mui.openWindow({
+						url:'searchs.html',
+						id:'searchs',
+						extras:{
+							title:encodeURI(val)
+						},
+						show:{
+							autoShow:true
+						},
+						waiting:{
+						    autoShow:true,//自动显示等待框，默认为true
+						    title:'正在加载...',//等待对话框上显示的提示内容
+						}
+					})
+				}
+				//读取本地存储
+				function Fgetstorage(){
+					document.querySelector('.mui-table-view').innerHTML='';
+					//没有存储
+					if(!localStorage.getItem('Lishi')){
+						//没有存储设置一个
+						localStorage.setItem('Lishi','[]');
+					}
+					//有存储就遍历在页面上
+					var arr=JSON.parse(localStorage.getItem('Lishi'));
+					console.log(arr);
+					mui.each(arr,function(index,item){
+						document.querySelector('.mui-table-view').innerHTML+=`
+						<li class="mui-table-view-cell" data-title="${item}">
+							<a class="mui-navigate-right">
+								<span class="iconfont icon-shijian"></span>${item}
+							</a>
+						</li>
+						`;
+						//局部滚动
+			            var myScroll = new IScroll('#wrapper', {
+			                scrollbars: true
+			            });
+					})
+				}
+				
+				//设置本地存储函数
+				function Fsetstorage(val){
+					//获取已经有了的本地存储
+					var arr=JSON.parse(localStorage.getItem('Lishi'));
+					console.log(arr);
+					var arrFilter = arr.filter(function(item,index){
+						return item.indexOf(val) < 0;
+					})
+					arrFilter.unshift( val );
+					arrFilter=arrFilter.slice(0,10);
+					localStorage.setItem('Lishi',JSON.stringify(arrFilter)); 
+				}
+				
+				//点击搜索历史，跳转
+				mui('.mui-table-view').on('tap','li',function(){
+					var dataTitle = this.getAttribute('data-title');
+					//跳转页面
+					Fjump(dataTitle);
+				})
+				
+			})
+		</script>
+	</body>
+
+</html>

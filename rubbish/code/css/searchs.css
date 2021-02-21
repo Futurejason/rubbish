@@ -1,0 +1,56 @@
+/* 标题栏 */
+.mui-bar .mui-title {
+	position: static;
+}
+/* 内容 */
+section{
+	flex: 1;
+	width: 100%;	
+}
+section h1{
+	font-size: 1.066666rem;
+	margin: 2.666666rem 0 1.333333rem 0.533333rem;
+}
+section div{
+	margin-bottom: 0.8rem;
+}
+section div p{
+	color: #99999c;
+	text-align: center;
+	margin-bottom: 0.266666rem;
+}
+section div p:last-child{
+	color: #000000;
+	font-size: 0.666666rem;
+	font-weight: bold;
+}
+section div h3{
+	margin-left: 0.533333rem;
+	font-weight: normal;
+	font-size: 0.373333rem;
+	color: #99999c;
+}
+.mui-table-view:after , .mui-table-view:before {
+	height: 0rem;
+}
+.mui-table-view{
+	background-color:  #f3f3f1;
+}
+.mui-table-view-cell:after{
+	position: absolute;
+	right: 0px;
+	bottom: 0;
+	left: 0px;
+	height: 1px;
+}
+.mui-table-view-cell{
+	padding: 0.266666rem 0.213333rem;
+	margin: 0 0.533333rem;
+	font-size: 0.373333rem;
+	color: #99999c;
+}
+.mui-table-view-cell .mui-navigate-right div{
+	display: flex;
+	flex-direction: column;
+	margin: 0.266666rem 0;
+}

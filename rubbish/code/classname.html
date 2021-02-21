@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/commont.css"/>
+		<link rel="stylesheet" type="text/css" href="css/class.css"/>
+		
+	
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">垃圾分类</h1>
+		</header>
+		<section>
+			<div>
+				<div class="mui-slider">
+				  <div class="mui-slider-group">
+				  </div>
+				</div>
+				<div class="iscrolls">
+					<div id="wrapper">
+					    <ul id="isitem">
+					    </ul>
+					</div>
+				</div>
+			</div>
+		</section>
+		
+		<script src="js/iscroll.js"></script>
+		<script src="js/flexible.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/mui.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.plusReady(function(){
+			    // 页面加载数据
+				mui.ajax('http://apis.juhe.cn/rubbish/category',{
+					data:{
+						key : 'dfe7a5dc90a9be32d35d15d5a06eb619'
+					},
+					success:function(data){
+						var results=data.result;
+						mui.each(results,function(index,item){
+							document.querySelector('.mui-slider-group').innerHTML+=`
+							    <div class="mui-slider-item">
+								  <div>
+								  	 <h4>${item.name}</h4>
+								  	 <p>${item.explain}</p>
+								  </div>
+							    </div>
+							`;
+						})
+						mui('.mui-slider').slider().gotoItem(0);
+						Fcommons(results[0].common)
+						document.querySelector('.mui-slider').addEventListener('slide', function(event) {
+						    Fcommons(results[event.detail.slideNumber].common);
+						});
+				        // 滚动条
+				        var myScroll = new IScroll('#wrapper', {
+				            scrollbars: true
+				        });
+				    },
+				        	
+				})
+				
+				// 滑动模块数据函数
+				function Fcommons(itemes){
+					document.querySelector('#isitem').innerHTML='';
+					var commons=itemes.split('、');
+					mui.each(commons,function(index,item){
+						document.querySelector('#isitem').innerHTML+=`
+						<li class="onsearchs" data-title="${item}">${item}</li>
+						`
+					})
+					// 给每个li添加点击事件
+					mui('#isitem').on('tap','.onsearchs',function(){
+						var dtitle=this.getAttribute('data-title');
+						mui.openWindow({
+							url:'searchs.html',
+							id:'searchs',
+							extras:{
+								title:encodeURI(dtitle)
+							},
+							show:{
+								autoShow:true
+							},
+							waiting:{
+							    autoShow:true,//自动显示等待框，默认为true
+							    title:'正在加载...',//等待对话框上显示的提示内容
+							}      
+						})
+					})
+				}
+			})
+		</script>
+	</body>
+
+</html>

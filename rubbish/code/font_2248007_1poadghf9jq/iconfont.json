@@ -1,0 +1,58 @@
+{
+  "id": "2248007",
+  "name": "垃圾fen'lei",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "554091",
+      "name": "关于",
+      "font_class": "iconset0142",
+      "unicode": "e629",
+      "unicode_decimal": 58921
+    },
+    {
+      "icon_id": "1687035",
+      "name": "分类",
+      "font_class": "ziyuan",
+      "unicode": "e620",
+      "unicode_decimal": 58912
+    },
+    {
+      "icon_id": "5064090",
+      "name": "垃圾桶",
+      "font_class": "lajitong",
+      "unicode": "e641",
+      "unicode_decimal": 58945
+    },
+    {
+      "icon_id": "7032263",
+      "name": "搜索",
+      "font_class": "sousuo",
+      "unicode": "e63b",
+      "unicode_decimal": 58939
+    },
+    {
+      "icon_id": "9974769",
+      "name": "时间",
+      "font_class": "shijian",
+      "unicode": "e714",
+      "unicode_decimal": 59156
+    },
+    {
+      "icon_id": "11752846",
+      "name": "回收",
+      "font_class": "huishou",
+      "unicode": "e6b9",
+      "unicode_decimal": 59065
+    },
+    {
+      "icon_id": "15686654",
+      "name": "语音",
+      "font_class": "yuyin",
+      "unicode": "e6e0",
+      "unicode_decimal": 59104
+    }
+  ]
+}
